@@ -15,11 +15,19 @@ public class Cliente implements Runnable{
     @Override
     public void run() {
         try {
-            semaforo.acquire();
+            /**
+             * bloquea la ejecución del hilo en curso y queda a la espera
+             * de que otro hilo llame a release()
+             * **/
+            semaforo.acquire(); //Hace down al semaforo
             this.caja.usarCaja(this.idCliente);
         } catch (InterruptedException E) {
             Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, E);
         }
-        semaforo.release();
+        /**
+         * Liberar un semáforo, incrementando su contador interno en una unidad. Si era cero a la entrada
+         * y otro hilo está esperando a que sea mayor que cero, despertar a dicho hilo.
+         * **/
+        semaforo.release(); //Hace up al semaforo
     }
 }
